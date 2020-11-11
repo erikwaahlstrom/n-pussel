@@ -1,6 +1,7 @@
 import React from "react";
+import Boxelement from "../elements/Boxelement";
 
 const Box = ({ tile }) => {
-  return <div>{tile}</div>;
+  return <Boxelement>{tile}</Boxelement>;
 };
 export default Box;

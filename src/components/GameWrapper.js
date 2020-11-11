@@ -17,12 +17,14 @@ const boxes = [
   { box: "12" },
   { box: "13" },
   { box: "14" },
+  { box: "15" },
 ];
 
 const GameWrapper = () => {
-  const [boxamount, setBoxes] = useState([]);
+  const [boxamount, setBoxes] = useState(boxes);
   const draw = () => {
-    setBoxes(boxes);
+    console.log("start game clicked");
+    // setBoxes(boxes);
   };
 
   console.log(boxes);
