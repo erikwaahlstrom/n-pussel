@@ -9,4 +9,3 @@ npm install / yarn
 npm run dev / yarn dev
 tests - npm run test / yarn test
 
-Styling: Emotion
