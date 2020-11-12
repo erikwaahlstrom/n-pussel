@@ -3,7 +3,7 @@ import styled from "@emotion/styled";
 export const WrapperDiv = styled.div`
   border: 1px solid gray;
   display: flex;
-  width: 510px;
+  width: 408px;
   margin: 0 auto;
   flex-wrap: wrap;
 `;
