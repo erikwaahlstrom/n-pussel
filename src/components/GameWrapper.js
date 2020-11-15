@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { shuffleArray, addBoxProperties, distanceBetween } from "../lib/utils";
+import { shuffleArray, addBoxProperties } from "../lib/utils";
 import Box from "./Box";
 import WrapperDiv from "../elements/WrapperDiv";
 
@@ -32,21 +32,25 @@ const GameWrapper = () => {
     const emptyBoxIndex = boxes.indexOf(emptyBox);
     const boxIndex = boxes.findIndex((index) => index.box === box.box);
 
-    const distance = distanceBetween(box, emptyBox);
-    if (distance.neighbours) {
-      swap(boxIndex, emptyBoxIndex);
+    if (boxIndex + 4 === emptyBoxIndex || boxIndex - 4 === emptyBoxIndex) {
+      boxSwap(boxIndex, emptyBoxIndex);
+    } else if (boxIndex + 1 === emptyBoxIndex && emptyBoxIndex % 4 !== 0) {
+      boxSwap(boxIndex, emptyBoxIndex);
+    } else if (
+      boxIndex - 1 === emptyBoxIndex &&
+      (emptyBoxIndex + 1) % 4 !== 0
+    ) {
+      boxSwap(boxIndex, emptyBoxIndex);
     }
   };
 
-  const swap = (clickedBoxIndex, emptyBoxIndex) => {
-    let tempArr = [...boxes];
-    tempArr[emptyBoxIndex] = boxes[clickedBoxIndex];
-    tempArr[clickedBoxIndex] = 0;
-
-    setBoxes(() => [...tempArr]);
+  const boxSwap = (clickedBoxIndex, emptyBoxIndex) => {
+    let tempArray = [...boxes];
+    tempArray[emptyBoxIndex] = boxes[clickedBoxIndex];
+    tempArray[clickedBoxIndex] = boxes[emptyBoxIndex];
+    setBoxes(() => [...tempArray]);
   };
 
-  console.log("boxes", boxes);
   return (
     <>
       <WrapperDiv>
