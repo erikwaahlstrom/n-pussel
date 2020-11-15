@@ -1,47 +1,57 @@
-import React, { useState } from "react";
-import { shuffleArray } from "../lib/utils";
+import React, { useEffect, useState } from "react";
+import { shuffleArray, addBoxProperties, distanceBetween } from "../lib/utils";
 import Box from "./Box";
-import Button from "../elements/Button";
 import WrapperDiv from "../elements/WrapperDiv";
 
-const boxesArray = [
-  { number: 1 },
-  { number: 2 },
-  { number: 3 },
-  { number: 4 },
-  { number: 5 },
-  { number: 6 },
-  { number: 7 },
-  { number: 8 },
-  { number: 9 },
-  { number: 10 },
-  { number: 11 },
-  { number: 12 },
-  { number: 13 },
-  { number: 14 },
-  { number: 15 },
-  { number: 16 },
-];
+const boxesArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+
+export const shuffledArray = shuffleArray(boxesArray);
 
 const GameWrapper = () => {
-  const [
-    boxes,
-    // , setBoxes
-  ] = useState(shuffleArray(boxesArray));
-  const draw = () => {
-    console.log("start game clicked");
-    // setBoxes(boxes);
+  const [boxes, setBoxes] = useState([]);
+
+  useEffect(() => {
+    setBoxes(generateBox(shuffledArray));
+  }, []);
+
+  const generateBox = (boxArr) => {
+    const tempBox = [];
+
+    boxArr.forEach((box, index) => {
+      tempBox[index] = {
+        ...addBoxProperties(index),
+        box,
+      };
+    });
+
+    return tempBox;
   };
 
-  const boxClick = () => {
-    console.log("box clicked");
+  const boxClick = (box) => {
+    const emptyBox = boxes.find((empty) => empty.box === 16);
+    const emptyBoxIndex = boxes.indexOf(emptyBox);
+    const boxIndex = boxes.findIndex((index) => index.box === box.box);
+
+    const distance = distanceBetween(box, emptyBox);
+    if (distance.neighbours) {
+      swap(boxIndex, emptyBoxIndex);
+    }
   };
+
+  const swap = (clickedBoxIndex, emptyBoxIndex) => {
+    let tempArr = [...boxes];
+    tempArr[emptyBoxIndex] = boxes[clickedBoxIndex];
+    tempArr[clickedBoxIndex] = 0;
+
+    setBoxes(() => [...tempArr]);
+  };
+
+  console.log("boxes", boxes);
   return (
     <>
-      <Button onClick={draw}>Start Game</Button>
       <WrapperDiv>
         {boxes.map((box, index) => {
-          return <Box {...box} boxClick={boxClick} key={index} />;
+          return <Box {...box} onClick={boxClick} key={index} />;
         })}
       </WrapperDiv>
     </>

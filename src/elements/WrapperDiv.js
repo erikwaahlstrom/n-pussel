@@ -4,7 +4,7 @@ export const WrapperDiv = styled.div`
   border: 1px solid gray;
   display: flex;
   width: 408px;
-  margin: 0 auto;
+  margin: 100px auto;
   flex-wrap: wrap;
 `;
 
