@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { shuffleArray, addBoxProperties } from "../lib/utils";
+import { shuffle, shuffleArray, addBoxProperties } from "../lib/utils";
 import Box from "./Box";
 import WrapperDiv from "../elements/WrapperDiv";
+import Button from "../elements/Button";
 
 const boxesArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-
-// export const shuffledArray = shuffleArray(boxesArray);
 
 const GameWrapper = () => {
   ///////////////////////
@@ -15,31 +14,35 @@ const GameWrapper = () => {
 
   // UPDATE STATE INITIAL
   useEffect(() => {
-    // setBoxes(generateBox(shuffledArray));
-    setBoxes(generateBox(boxesArray));
+    generateBox(boxesArray);
   }, []);
 
   ///////////////////////
   // DRAW OUT BOXES
   ///////////////////////
   const generateBox = (boxArr) => {
-    let shuffled = shuffleArray(boxArr);
+    let shuffled = shuffle(boxArr);
+    // remove
     console.log("shuffled", shuffled);
 
-    while (!isSolvable(shuffled)) {
-      shuffled = shuffleArray(boxArr);
+    let shuffledArray = shuffleArray(boxArr);
+    // remove
+    console.log("shuffledArray", shuffledArray);
+
+    while (!isSolvable(shuffledArray)) {
+      shuffledArray = shuffleArray(boxArr);
     }
 
     const tempBox = [];
 
-    shuffled.forEach((box, index) => {
+    shuffledArray.forEach((box, index) => {
       tempBox[index] = {
         ...addBoxProperties(index),
         box,
       };
     });
 
-    return tempBox;
+    setBoxes(() => [...tempBox]);
   };
 
   ///////////////////////
@@ -90,8 +93,16 @@ const GameWrapper = () => {
     boxes.map((item) => item.box)
   );
 
+  ///////////////////////
+  // RESET CLICK
+  ///////////////////////
+  const resetClick = () => {
+    generateBox(boxesArray);
+  };
+
   return (
     <>
+      <Button onClick={resetClick}>Restart game</Button>
       <WrapperDiv>
         {boxes.map((box, index) => {
           return <Box {...box} onClick={boxClick} key={index} />;

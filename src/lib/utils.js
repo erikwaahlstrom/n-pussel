@@ -1,4 +1,4 @@
-export const shuffleArray = function (arr) {
+export const shuffle = function (arr) {
   let newPos, temp;
   for (let i = arr.length - 1; i > 0; i--) {
     newPos = Math.floor(Math.random() * (i + 1));
@@ -9,15 +9,20 @@ export const shuffleArray = function (arr) {
   return arr;
 };
 
-// export const isSolvable = (arr) => {
-//   let number_of_inv = 0;
-//   for (let i = 0; i < arr.length; i++) {
-//     for (let j = i + 1; j < arr.length; j++) {
-//       if (arr[i] && arr[j] && arr[i] > arr[j]) number_of_inv++;
-//     }
-//   }
-//   return number_of_inv % 2 == 0;
-// };
+// shuffle the array
+export const shuffleArray = (arr) => {
+  const copy = [...arr];
+  // loop over half or full of the array
+  for (let i = 0; i < copy.length; i++) {
+    // for each index,i pick a random index j
+    let j = parseInt(Math.random() * copy.length);
+    // swap elements at i and j
+    let temp = copy[i];
+    copy[i] = copy[j];
+    copy[j] = temp;
+  }
+  return copy;
+};
 
 export const addBoxProperties = (number) => {
   const column = number % 4;
