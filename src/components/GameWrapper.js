@@ -1,33 +1,60 @@
 import React, { useEffect, useState } from "react";
-import { shuffle, shuffleArray, addBoxProperties } from "../lib/utils";
+import { shuffleArray, addBoxProperties } from "../lib/utils";
 import Box from "./Box";
 import WrapperDiv from "../elements/WrapperDiv";
 import Button from "../elements/Button";
+import HeaderOne from "../elements/HeaderOne";
+import TitleWrapper from "../elements/TitleWrapper";
+import Container from "../elements/Container";
 
 const boxesArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+const compareArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
 const GameWrapper = () => {
   ///////////////////////
   // STATE
   ///////////////////////
   const [boxes, setBoxes] = useState([]);
+  const [original] = useState(boxesArray);
+  const [modal, setModal] = useState(false);
 
-  // UPDATE STATE INITIAL
+  useEffect(() => {
+    const boxesJSON = makeJSON(boxes);
+  }, [boxes]);
+
+  useEffect(() => {
+    const originalJSON = JSON.stringify(original);
+    const compareArrayJSON = JSON.stringify(compareArray);
+
+    const boxesJSON = makeJSON(boxes);
+
+    if (originalJSON === boxesJSON) {
+      setModal(true);
+    }
+  }, [boxes]);
+
   useEffect(() => {
     generateBox(boxesArray);
   }, []);
 
   ///////////////////////
+  // MakeJSON converter
+  ///////////////////////
+  const makeJSON = (boxes) => {
+    const mapedBoxState = boxes.map((item) => {
+      return item.box;
+    });
+
+    const boxesJSON = JSON.stringify(mapedBoxState);
+
+    return boxesJSON;
+  };
+
+  ///////////////////////
   // DRAW OUT BOXES
   ///////////////////////
   const generateBox = (boxArr) => {
-    let shuffled = shuffle(boxArr);
-    // remove
-    console.log("shuffled", shuffled);
-
     let shuffledArray = shuffleArray(boxArr);
-    // remove
-    console.log("shuffledArray", shuffledArray);
 
     while (!isSolvable(shuffledArray)) {
       shuffledArray = shuffleArray(boxArr);
@@ -88,11 +115,6 @@ const GameWrapper = () => {
     setBoxes(() => [...tempArray]);
   };
 
-  console.log(
-    "boxes",
-    boxes.map((item) => item.box)
-  );
-
   ///////////////////////
   // RESET CLICK
   ///////////////////////
@@ -102,12 +124,24 @@ const GameWrapper = () => {
 
   return (
     <>
-      <Button onClick={resetClick}>Restart game</Button>
-      <WrapperDiv>
-        {boxes.map((box, index) => {
-          return <Box {...box} onClick={boxClick} key={index} />;
-        })}
-      </WrapperDiv>
+      <Container>
+        {modal ? (
+          <TitleWrapper>
+            <HeaderOne>You finished the puzzle!</HeaderOne>
+          </TitleWrapper>
+        ) : (
+          <TitleWrapper>
+            <HeaderOne>Numbers Puzzle</HeaderOne>
+          </TitleWrapper>
+        )}
+
+        <WrapperDiv>
+          {boxes.map((box, index) => {
+            return <Box {...box} onClick={boxClick} key={index} />;
+          })}
+        </WrapperDiv>
+        <Button onClick={resetClick}>Restart game</Button>
+      </Container>
     </>
   );
 };

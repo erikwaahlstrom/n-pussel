@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 
 export const Boxelement = styled.div`
-  background-color: ${({ state }) => (state ? "transparent" : "#FA887B")};
+  background-color: ${({ state }) => (state ? "transparent" : "#A155B9")};
   height: 100px;
   width: 100px;
   color: #fff;
